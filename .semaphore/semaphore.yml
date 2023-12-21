@@ -1,22 +1,15 @@
 version: v1.0
-name: Parallel
+name: Java
 agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu2004
 blocks:
-  - name: "Block #1"
+  - name: Maven
     task:
       jobs:
-        - name: "Job #1"
+        - name: Build
           commands:
             - checkout
-            - ls
-        - name: "Job #2"
-          commands:
-            - checkout
-            - ls
-        - name: "Job #3"
-          commands:
-            - checkout
-            - ls
+            - sem-version java 1.8
+            - mvn -B package --file pom.xml
