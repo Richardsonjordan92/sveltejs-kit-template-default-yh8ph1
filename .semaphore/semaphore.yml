@@ -13,6 +13,15 @@ blocks:
             - checkout
             - sem-version java 1.8
             - mvn -B package --file pom.xml
+      env_vars:
+        - name: FOO_1
+          value: BAR_1
+      agent:
+        machine:
+          type: e1-standard-2
+          os_image: ubuntu1804
+    run:
+      when: branch = 'master'
     dependencies: []
   - name: 'Block #2'
     dependencies:
@@ -34,6 +43,7 @@ blocks:
     dependencies:
       - 'Block #2'
       - 'Block #3'
+      - 'Block #5'
       - Maven
     task:
       env_vars:
@@ -63,6 +73,13 @@ blocks:
         - name: 'Job #2'
           commands:
             - top
+  - name: 'Block #5'
+    dependencies:
+      - 'Block #2'
+    task:
+      jobs:
+        - name: 'Job #1'
+          commands: []
 after_pipeline:
   task:
     jobs:
